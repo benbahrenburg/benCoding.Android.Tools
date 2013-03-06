@@ -13,10 +13,13 @@ import org.appcelerator.kroll.annotations.Kroll;
 
 import org.appcelerator.titanium.TiApplication;
 
+import bencoding.android.CommonLogger;
+
+
 @Kroll.module(name="Androidtools", id="bencoding.android.tools")
 public class AndroidtoolsModule extends KrollModule
 {
-	public static final String MODULE_FULL_NAME = "becoding.android.tools";
+	public static final String MODULE_FULL_NAME = "bencoding.android.tools";
 	
 	public AndroidtoolsModule()
 	{
@@ -26,8 +29,17 @@ public class AndroidtoolsModule extends KrollModule
 	@Kroll.onAppCreate
 	public static void onAppCreate(TiApplication app)
 	{
-		//Log.d(LCAT, "inside onAppCreate");
-		// put module init code that needs to run when the application is created
 	}
+	
+	@Kroll.method
+	public void disableLogging()
+	{
+		CommonLogger.setDebug(false);
+	}
+	@Kroll.method
+	public void enableLogging()
+	{
+		CommonLogger.setDebug(true);
+	}	
 }
 
