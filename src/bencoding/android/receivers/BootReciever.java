@@ -1,27 +1,25 @@
 package bencoding.android.receivers;
 
+import org.appcelerator.kroll.KrollDict;
 import org.appcelerator.titanium.TiApplication;
 
 
-import bencoding.android.CommonLogger;
+import bencoding.android.Common;
 
 import android.R;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 
 
 public class BootReciever  extends BroadcastReceiver{
 	private final static String COMPONENT_NAME = "bencoding.android.receivers.BootReciever";
-	private final static String BOOT_TYPE_START ="START";
+	private final static String BOOT_TYPE_START ="RESTART";
 	private final static String START_SEND_TO_BACK="sendToBack";
 	
 	private final static String BOOT_TYPE_NOTIFY ="NOTIFY";
@@ -37,32 +35,39 @@ public class BootReciever  extends BroadcastReceiver{
 	private final static String PROP_TITLE = "title_property_to_reference";
 	private final static String PROP_MESSAGE= "message_property_to_reference";
 	private final static int APP_ID = 1234;
+	private final static String BOOT_TYPE ="BOOT_TYPE";
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
-		CommonLogger.msgLogger("BootReciever onRecieve");
+		Common.msgLogger("BootReciever onRecieve");
 		
-		ActivityInfo info = getMetaInfo(context);		
+		ActivityInfo info = Common.getMetaInfo(context,COMPONENT_NAME);		
 		if(info == null){
-			CommonLogger.msgLogger("No Meta data found, existing");
+			Common.msgLogger("No Meta data found, existing");
 			return;
 		}
 		
-		CommonLogger.msgLogger("Creating Bundle from Meta Data");
+		Common.msgLogger("Creating Bundle from Meta Data");
 		//extract meda-data
 		Bundle bundle = info.metaData;
 
-		CommonLogger.msgLogger("Checking bootType");
+		Common.msgLogger("Checking bootType");
 		String bootType = bundle.getString("bootType");
 		
 		//If no boot type provided, exit
 		if(bootType == null){
-			CommonLogger.msgLogger("no bootType found, stopping");
+			Common.msgLogger("no bootType found, stopping");
 			return;
 		}
-		CommonLogger.msgLogger("Processing bootType of " + bootType);
+		Common.msgLogger("Processing bootType of " + bootType);
 
+		if(TiApplication.getInstance()!=null){
+			KrollDict event = new KrollDict();
+			event.put("type", bootType);
+			TiApplication.getInstance().fireAppEvent(BOOT_TYPE, event);
+		}
+		
 		//If bootType of start provided, startup the app
 		if(bootType.equalsIgnoreCase(BOOT_TYPE_PROPERTY)){
 			bootProperty(context,bundle);
@@ -86,32 +91,22 @@ public class BootReciever  extends BroadcastReceiver{
 			return;
 		}		
 	}
-	private ActivityInfo getMetaInfo(Context context){
-		CommonLogger.msgLogger("Getting Meta Data");
-		ActivityInfo info = null;
-		try {
-			info = context.getPackageManager().getReceiverInfo(new ComponentName(context, COMPONENT_NAME), PackageManager.GET_META_DATA);			
-		} catch (NameNotFoundException e) {
-			e.printStackTrace();
-		}		
-		
-		return info;
-	}
+
 	private void bootProperty(Context context, Bundle bundle){
-		CommonLogger.msgLogger("Starting boot from proerty ");
+		Common.msgLogger("Starting boot from proerty ");
 		if(TiApplication.getInstance() == null){
-			CommonLogger.msgLogger("TiApplication not available, stopping");
+			Common.msgLogger("TiApplication not available, stopping");
 			return;
 		}
 		
 		if(!bundle.containsKey(PROP_ENABLED) ||
 			!bundle.containsKey(PROP_BOOT_TYPE)){
-			CommonLogger.msgLogger("no bootType or prop_enabled properties found, stopping");
+			Common.msgLogger("no bootType or prop_enabled properties found, stopping");
 			return;
 		}
 		if((bundle.getString(PROP_ENABLED) == null)||
 			(bundle.getString(PROP_BOOT_TYPE) == null)){
-			CommonLogger.msgLogger("prop_bootType or prop_enabled property is null, stopping");
+			Common.msgLogger("prop_bootType or prop_enabled property is null, stopping");
 			return;
 		}
 		if(!TiApplication.getInstance().getAppProperties().getBool(bundle.getString(PROP_ENABLED),false)){
@@ -164,7 +159,7 @@ public class BootReciever  extends BroadcastReceiver{
 	private void notifyOnStart(Context context,String msgTitle,String msgText, int msgIcon){
 		
 		if(TiApplication.getInstance() == null){
-			CommonLogger.msgLogger("TiApplication not available, stopping");
+			Common.msgLogger("TiApplication not available, stopping");
 			return;
 		}
 		

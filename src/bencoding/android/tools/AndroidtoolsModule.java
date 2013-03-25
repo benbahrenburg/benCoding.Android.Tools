@@ -13,7 +13,7 @@ import org.appcelerator.kroll.annotations.Kroll;
 
 import org.appcelerator.titanium.TiApplication;
 
-import bencoding.android.CommonLogger;
+import bencoding.android.Common;
 
 
 @Kroll.module(name="Androidtools", id="bencoding.android.tools")
@@ -34,12 +34,12 @@ public class AndroidtoolsModule extends KrollModule
 	@Kroll.method
 	public void disableLogging()
 	{
-		CommonLogger.setDebug(false);
+		Common.setDebug(false);
 	}
 	@Kroll.method
 	public void enableLogging()
 	{
-		CommonLogger.setDebug(true);
+		Common.setDebug(true);
 	}	
 }
 
