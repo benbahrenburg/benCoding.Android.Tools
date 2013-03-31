@@ -28,60 +28,16 @@ If you are building from source you will need to do the following:
 var tools = require('bencoding.android.tools');
 </code></pre>
 
-<h2>Methods</h2>
 
-<b>intentAvailable</b>( Ti.Android.Intent )
-This method checks if there is an app on your device that can handle a specific intent.
+<h2>Platform Methods</h2>
+The platform methods proxy provides access to several helpful Android apis not currently exposed in the core Titanium SDK.
 
-<b>Parameters</b>
-intent : Ti.Android.Intent
-Ti.Android.Intent to be used in checking for availability.
+To learn more about these please visit the documentation [here](https://github.com/benbahrenburg/benCoding.Android.Tools/tree/master/documentation/platform.md) or the examples [here](https://github.com/benbahrenburg/benCoding.Android.Tools/tree/master/example/platform).
 
-<b>Returns</b>
-Boolean
+<h2>BootReceiver</h2>
+The BootReceiver proxy provides extended functionality for handling the BOOT_COMPLETED system broadcast.
 
-<b>Example</b>
-<pre><code>
-	var platformTools = tools.createPlatform();
-	var intent = Ti.Android.createIntent({
-		action: Ti.Android.ACTION_VIEW,
-		type: "application/pdf",
-		data: session.tempFile.nativePath
-	});
-
-	if(platformTools.intentAvailable(intent)){
-		try {
-			Ti.Android.currentActivity.startActivity(intent);
-		} catch(e) {
-			Ti.API.debug(e);
-			alert('Something went wrong');
-		}
-	}else{
-		alert("Please go to the Google Play Store and download a PDF reader");			
-	}
-
-</code></pre>
-
-----
-
-<b>restartApp</b>
-This method restarts your Titanium app
-
-<b>Parameters</b>
-None
-
-<b>Returns</b>
-None
-
-<b>Example</b>
-<pre><code>
-	var platformTools = tools.createPlatform();
-	//Restarts your Titanium App
-	platformTools.restartApp();
-
-</code></pre>
-
-----
+To learn more about these please visit the documentation [here](https://github.com/benbahrenburg/benCoding.Android.Tools/tree/master/documentation/bootreceiver.md) or the examples [here](https://github.com/benbahrenburg/benCoding.Android.Tools/tree/master/example/BootReceiver).
 
 <h2>Licensing & Support</h2>
 
