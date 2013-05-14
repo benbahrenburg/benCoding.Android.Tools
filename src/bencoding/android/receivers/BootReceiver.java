@@ -17,8 +17,8 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 
-public class BootReciever  extends BroadcastReceiver{
-	private final static String COMPONENT_NAME = "bencoding.android.receivers.BootReciever";
+public class BootReceiver  extends BroadcastReceiver{
+	private final static String COMPONENT_NAME = "bencoding.android.receivers.BootReceiver";
 	private final static String BOOT_TYPE_START ="RESTART";
 	private final static String START_SEND_TO_BACK="sendToBack";
 	
