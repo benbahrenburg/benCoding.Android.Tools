@@ -10,6 +10,7 @@ import org.appcelerator.titanium.TiApplication;
 import org.appcelerator.titanium.proxy.IntentProxy;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
@@ -33,7 +34,20 @@ public class PlatformProxy  extends KrollProxy {
 		   return Settings.System.getInt(TiApplication.getInstance().getApplicationContext().getContentResolver(),
 		           Settings.System.AIRPLANE_MODE_ON, 0) != 0;
 	}
-	
+
+	@Kroll.method
+	public boolean isInForeground() {
+		try {
+	        boolean foreground = new ForegroundCheckTask().execute(TiApplication.getInstance().getApplicationContext()).get();
+	        return foreground;
+	    } catch (InterruptedException e) {
+	        e.printStackTrace();
+	        return false;
+	    } catch (ExecutionException e) {
+	        e.printStackTrace();
+	        return false;
+	    }		
+	}
 	@Kroll.method
 	public boolean intentAvailable(IntentProxy intent) {
 		if(intent == null){
