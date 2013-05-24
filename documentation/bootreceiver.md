@@ -83,9 +83,10 @@ The following shows how to add a receiver entry in your tiapp.xml to use the Boo
                 ...
                 </activity>
   		     ...
-                <receiver android:exported="true" android:name="bencoding.android.receivers.BootReciever">
+                <receiver android:exported="true" android:name="bencoding.android.receivers.BootReceiver">
                     <intent-filter>
                         <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                        <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
                     </intent-filter>
 
                     <meta-data android:name="bootType" android:value="restart"/>
@@ -117,9 +118,10 @@ The following shows how to add a receiver entry in your tiapp.xml to use the Boo
                 ...
                 </activity>
     	     ...
-                <receiver android:exported="true" android:name="bencoding.android.receivers.BootReciever">
+                <receiver android:exported="true" android:name="bencoding.android.receivers.BootReceiver">
                     <intent-filter>
                         <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                        <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
                     </intent-filter>
 
                     <meta-data android:name="bootType" android:value="notify"/>
@@ -155,9 +157,10 @@ The following shows how to add a receiver entry in your tiapp.xml to enable the 
                 ...
                 </activity>
            ...
-                <receiver android:exported="true" android:name="bencoding.android.receivers.BootReciever">
+                <receiver android:exported="true" android:name="bencoding.android.receivers.BootReceiver">
                     <intent-filter>
                         <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                        <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
                     </intent-filter>
 
                     <meta-data android:name="bootType" android:value="propertyBased"/>
