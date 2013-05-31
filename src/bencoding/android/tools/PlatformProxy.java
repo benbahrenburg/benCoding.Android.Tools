@@ -138,4 +138,10 @@ public class PlatformProxy  extends KrollProxy {
 	    Object[] returnObject = appList.toArray(new Object[appList.size()]);
 	    return returnObject;		
 	}
+	
+	@Kroll.method
+	public void launchIntentForPackage(String packageName){
+		Intent launchIntent = TiApplication.getInstance().getApplicationContext().getPackageManager().getLaunchIntentForPackage(packageName);
+		TiApplication.getInstance().startActivity(launchIntent);
+	}
 }
