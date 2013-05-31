@@ -1,6 +1,6 @@
 package bencoding.android.tools;
 
-import com.sun.tools.javac.util.List;
+import java.util.List;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;

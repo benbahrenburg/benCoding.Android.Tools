@@ -123,8 +123,8 @@ public class PlatformProxy  extends KrollProxy {
 	@Kroll.method
 	public Object[] getInstalledApps(){
 
-		 ArrayList appList = new ArrayList();	
-		 final PackageManager pm = TiApplication.getInstance().getApplicationContext().getPackageManager();
+		ArrayList appList = new ArrayList();	
+		final PackageManager pm = TiApplication.getInstance().getApplicationContext().getPackageManager();
 		List<PackageInfo> packages = pm.getInstalledPackages(PackageManager.GET_META_DATA);
 		for (PackageInfo packageInfo : packages) {
 			HashMap<String, Object> record = new HashMap<String, Object>(5);
@@ -133,6 +133,7 @@ public class PlatformProxy  extends KrollProxy {
 	    	record.put("versionName", packageInfo.versionName);	 
 	    	record.put("name", packageInfo.applicationInfo.loadLabel(pm).toString());
 	    	record.put("isSystemApp",(!isUserApp(packageInfo.applicationInfo)));
+			appList.add(record);
 		}	
 	    Object[] returnObject = appList.toArray(new Object[appList.size()]);
 	    return returnObject;		
