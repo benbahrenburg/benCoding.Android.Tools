@@ -1,5 +1,7 @@
 package bencoding.android.receivers;
 
+import java.util.Calendar;
+
 import org.appcelerator.kroll.KrollDict;
 import org.appcelerator.titanium.TiApplication;
 
@@ -36,7 +38,7 @@ public class BootReceiver  extends BroadcastReceiver{
 	private final static String PROP_MESSAGE= "message_property_to_reference";
 	private final static int APP_ID = 1234;
 	private final static String BOOT_TYPE ="BOOT_TYPE";
-	
+	private final static String START_TIME_RECORD_PROPERTY="record_start_property";
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
@@ -87,11 +89,19 @@ public class BootReceiver  extends BroadcastReceiver{
 			String msgText = bundle.getString(NOTIFY_MESSAGE); 
 			if((msgTitle!=null) && (msgText!=null)){
 				notifyOnStart(context,msgTitle,msgText,msgIcon);
-			}
-			return;
+			}			
+			writeStartDate(bundle);
 		}		
 	}
 
+	private void writeStartDate(Bundle bundle){
+		if(bundle.containsKey(START_TIME_RECORD_PROPERTY)){
+			String recordTimeProperty = bundle.getString(START_TIME_RECORD_PROPERTY);
+			if(recordTimeProperty!=null){
+				TiApplication.getInstance().getAppProperties().setDouble(recordTimeProperty, Calendar.getInstance().getTimeInMillis());
+			}
+		}		
+	}
 	private void bootProperty(Context context, Bundle bundle){
 		Common.msgLogger("Starting boot from proerty ");
 		if(TiApplication.getInstance() == null){
@@ -116,12 +126,11 @@ public class BootReceiver  extends BroadcastReceiver{
 		if(actionType.equalsIgnoreCase(BOOT_TYPE_START)){
 			boolean sendToBack = TiApplication.getInstance().getAppProperties().getBool(bundle.getString(PROP_SEND_TO_BACK),false);
 			openBootUp(context,sendToBack);
-			return;
 		}
 		if(actionType.equalsIgnoreCase(BOOT_TYPE_NOTIFY)){
 			propertyNotify(context,bundle);
-			return;
-		}		
+		}				
+		writeStartDate(bundle);
 	}
 	private void openBootUp(Context context, boolean sendToBack){
 		bootStartup(context);
