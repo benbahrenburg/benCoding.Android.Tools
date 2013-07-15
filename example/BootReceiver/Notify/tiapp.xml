@@ -55,6 +55,7 @@
                 <receiver android:exported="true" android:name="bencoding.android.receivers.BootReciever">
                     <intent-filter>
                         <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                        <action android:name="android.intent.action.QUICKBOOT_POWERON" />
                     </intent-filter>
                     <meta-data android:name="bootType" android:value="notify"/>
                     <meta-data android:name="title" android:value="Title Sample from tiapp.xml"/>
