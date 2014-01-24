@@ -2,7 +2,7 @@
 # this is your module manifest and used by Titanium
 # during compilation, packaging, distribution, etc.
 #
-version: 0.32
+version: 0.34
 apiversion: 2
 description: A collection of utilities designed to make working with Titanium on Android alittle easier.
 author: Benjamin Bahrenburg
@@ -15,4 +15,4 @@ name: AndroidTools
 moduleid: bencoding.android.tools
 guid: c8a9f567-5923-4534-a567-cefcc17a0a7d
 platform: android
-minsdk: 3.1.1.GA
+minsdk: 3.2.0.GA

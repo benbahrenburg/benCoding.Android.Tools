@@ -71,7 +71,10 @@ public class PlatformProxy  extends KrollProxy {
 		Intent iStartActivity = TiApplication.getInstance().getApplicationContext().getPackageManager()
 	             	.getLaunchIntentForPackage( TiApplication.getInstance().getApplicationContext().getPackageName() );
 		
-		iStartActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);	
+		iStartActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		iStartActivity.addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+		iStartActivity.addCategory(Intent.CATEGORY_LAUNCHER);
+		iStartActivity.setAction(Intent.ACTION_MAIN);
 		
 		int mPendingIntentId = 123456;
 		PendingIntent pendingIntent = PendingIntent.getActivity(TiApplication.getInstance().getApplicationContext(), 
@@ -80,8 +83,8 @@ public class PlatformProxy  extends KrollProxy {
 				PendingIntent.FLAG_CANCEL_CURRENT);
 		
 		AlarmManager mgr = (AlarmManager)TiApplication.getInstance().getApplicationContext().getSystemService(TiApplication.ALARM_SERVICE);
-		mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, pendingIntent);
-		System.exit(0);
+		mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 10000, pendingIntent);
+		performExit();
 	}
 		
 	@Kroll.method
