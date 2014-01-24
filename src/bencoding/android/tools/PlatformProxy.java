@@ -14,6 +14,8 @@ import java.util.concurrent.ExecutionException;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -57,20 +59,34 @@ public class PlatformProxy  extends KrollProxy {
 		PackageManager packageManager = TiApplication.getInstance().getPackageManager();
 		return (packageManager.queryIntentActivities(intent.getIntent(), PackageManager.MATCH_DEFAULT_ONLY).size() > 0) ;		
 	}
+
+	private void performExit(){
+		android.os.Process.killProcess(android.os.Process.myPid());
+	}
 	
 	@Kroll.method
 	public void restartApp()
 	{
 		Log.d(AndroidtoolsModule.MODULE_FULL_NAME, "Restarting app");
-		Intent i = TiApplication.getInstance().getApplicationContext().getPackageManager()
+		Intent iStartActivity = TiApplication.getInstance().getApplicationContext().getPackageManager()
 	             	.getLaunchIntentForPackage( TiApplication.getInstance().getApplicationContext().getPackageName() );
-		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		TiApplication.getInstance().getApplicationContext().startActivity(i);		
+		
+		iStartActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);	
+		
+		int mPendingIntentId = 123456;
+		PendingIntent pendingIntent = PendingIntent.getActivity(TiApplication.getInstance().getApplicationContext(), 
+				mPendingIntentId,    
+				iStartActivity,
+				PendingIntent.FLAG_CANCEL_CURRENT);
+		
+		AlarmManager mgr = (AlarmManager)TiApplication.getInstance().getApplicationContext().getSystemService(TiApplication.ALARM_SERVICE);
+		mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, pendingIntent);
+		System.exit(0);
 	}
-	
+		
 	@Kroll.method
 	public void exitApp(){
-		android.os.Process.killProcess(android.os.Process.myPid());
+		performExit();
 	}
 	
 	@Kroll.method
