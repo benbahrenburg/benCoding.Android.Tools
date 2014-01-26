@@ -28,7 +28,7 @@ var my = {
 	}
 	win.add(Ti.UI.createLabel({
 		top:10, height:25, left:5, right:5,color:'#000',
-		textAlign:'left',text:'App Started on: ' + String.formatDate(startTime,"long")), 
+		textAlign:'left',text:'App Started on: ' + String.formatDate(startTime,"long"), 
 		font:{fontSize:14}
 	}));
 
