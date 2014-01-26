@@ -65,10 +65,16 @@ public class PlatformProxy  extends KrollProxy {
 	}
 	
 	@Kroll.method
-	public void restartApp()
+	public void restartApp(@Kroll.argument(optional=true) Object delay)
 	{
 		int pendingIntentID = 999123;
-		int DELAY_OFFSET = 15000;
+		long DELAY_OFFSET = 15000;
+		
+		if (delay != null) {
+			if(delay instanceof Long){
+				DELAY_OFFSET = (Long)delay;
+			}
+	    } 
 		
 		if(TiApplication.getInstance().isDebuggerEnabled()){
 			Log.d(AndroidtoolsModule.MODULE_FULL_NAME, "App cannot be restarted with debugger enabled");
@@ -84,6 +90,7 @@ public class PlatformProxy  extends KrollProxy {
 		//Add the flags needed to restart
 		iStartActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		iStartActivity.addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+		iStartActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		iStartActivity.addCategory(Intent.CATEGORY_LAUNCHER);
 		iStartActivity.setAction(Intent.ACTION_MAIN);
 		
@@ -93,15 +100,13 @@ public class PlatformProxy  extends KrollProxy {
 		PendingIntent pendingIntent = PendingIntent.getActivity(TiApplication.getInstance().getApplicationContext(), 
 				pendingIntentID,    
 				iStartActivity,
-				PendingIntent.FLAG_CANCEL_CURRENT);
+				PendingIntent.FLAG_UPDATE_CURRENT);
 		
 		Log.d(AndroidtoolsModule.MODULE_FULL_NAME, "Scheduling Restart");
 		//Schedule an Alarm to restart after a delay
-		AlarmManager mgr = (AlarmManager)TiApplication.getInstance().getApplicationContext().getSystemService(TiApplication.ALARM_SERVICE);
-		mgr.set(AlarmManager.RTC, System.currentTimeMillis() + DELAY_OFFSET, pendingIntent);
-		
-		Log.d(AndroidtoolsModule.MODULE_FULL_NAME, "Clean-up and Exit");
-		
+		AlarmManager mgr = (AlarmManager)TiApplication.getInstance().getApplicationContext().getSystemService(TiApplication.ALARM_SERVICE);		
+		mgr.set(AlarmManager.RTC, System.currentTimeMillis() + DELAY_OFFSET, pendingIntent);		
+		Log.d(AndroidtoolsModule.MODULE_FULL_NAME, "Clean-up and Exit");		
 		//Tell Ti to do some clean-up
 		TiApplication.getInstance().beforeForcedRestart();
 		
