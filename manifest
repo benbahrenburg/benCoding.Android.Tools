@@ -2,7 +2,7 @@
 # this is your module manifest and used by Titanium
 # during compilation, packaging, distribution, etc.
 #
-version: 0.35
+version: 0.36
 apiversion: 2
 description: A collection of utilities designed to make working with Titanium on Android alittle easier.
 author: Benjamin Bahrenburg

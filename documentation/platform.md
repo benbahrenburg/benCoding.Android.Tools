@@ -108,3 +108,24 @@ Boolean (true/false)
 </code></pre>
 
 ----
+
+<b>getSystemDateTime</b>
+This method returns an object representing the current time on the device, useful when you need to know if the timezone has changed, since the JavaScript engine will often initialize this value up front and never check the OS.
+
+<b>Parameters</b>
+None
+
+<b>Returns</b>
+HashMap containing the following keys:
+<ul>
+	<li>TZOffset: The timezone offset of the device, in minutes.</li>
+	<li>Year</li>
+	<li>Month</li>
+	<li>Day</li>
+	<li>Hour</li>
+	<li>Minutes</li>
+	<li>Seconds</li>
+	<li>Date: In the format yyyy/MM/ss HH:mm:ss</li>
+</ul>
+
+----

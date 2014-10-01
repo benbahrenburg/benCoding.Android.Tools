@@ -1,7 +1,10 @@
 package bencoding.android.tools;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.TimeZone;
 
 import org.appcelerator.kroll.KrollProxy;
 import org.appcelerator.kroll.annotations.Kroll;
@@ -11,6 +14,7 @@ import org.appcelerator.titanium.proxy.IntentProxy;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
@@ -189,5 +193,27 @@ public class PlatformProxy  extends KrollProxy {
 	public void launchIntentForPackage(String packageName){
 		Intent launchIntent = TiApplication.getInstance().getApplicationContext().getPackageManager().getLaunchIntentForPackage(packageName);
 		TiApplication.getInstance().startActivity(launchIntent);
+	}
+	
+	@SuppressWarnings("rawtypes")
+	@Kroll.method
+	public HashMap getSystemDateTime() {
+		Calendar cal = Calendar.getInstance();
+		TimeZone tz = TimeZone.getDefault();
+		SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		HashMap dateMap = new HashMap();
+		
+		// dateMap.put("TZOffset", Integer.toString(Math.round(tz.getOffset(cal.getTimeInMillis() / 1000 / 60))));
+		dateMap.put("TZOffset", TimeUnit.MILLISECONDS.toMinutes(tz.getOffset(cal.getTimeInMillis())));
+		dateMap.put("Date", df.format(cal.getTime()));
+		dateMap.put("Month", cal.get(cal.MONTH));
+		dateMap.put("Year",  cal.get(cal.YEAR));
+		dateMap.put("Day",  cal.get(cal.DAY_OF_MONTH));
+		dateMap.put("Hour",  cal.get(cal.HOUR));
+		dateMap.put("Minutes",  cal.get(cal.MINUTE));
+		dateMap.put("Seconds",  cal.get(cal.SECOND));
+		dateMap.put("DayOfWeek",  cal.get(cal.DAY_OF_WEEK));
+		
+		return dateMap;
 	}
 }
