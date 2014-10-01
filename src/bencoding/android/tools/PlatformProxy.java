@@ -209,7 +209,7 @@ public class PlatformProxy  extends KrollProxy {
 		dateMap.put("Month", cal.get(cal.MONTH));
 		dateMap.put("Year",  cal.get(cal.YEAR));
 		dateMap.put("Day",  cal.get(cal.DAY_OF_MONTH));
-		dateMap.put("Hour",  cal.get(cal.HOUR));
+		dateMap.put("Hour",  cal.get(cal.HOUR_OF_DAY));
 		dateMap.put("Minutes",  cal.get(cal.MINUTE));
 		dateMap.put("Seconds",  cal.get(cal.SECOND));
 		dateMap.put("DayOfWeek",  cal.get(cal.DAY_OF_WEEK));
