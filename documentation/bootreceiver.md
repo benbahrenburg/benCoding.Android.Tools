@@ -60,7 +60,9 @@ Using the information from step #1’s AndroidManifest.xml add an android config
                         <category android:name="android.intent.category.LAUNCHER"/>
                     </intent-filter>
                 </activity>
+				<service android:name="bencoding.android.services.MainMenuService" ></service>
             </application>
+			<uses-permission android:name="android.permission.WAKE_LOCK" />
             <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
         </manifest>
     </android>

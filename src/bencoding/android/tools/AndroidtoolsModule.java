@@ -10,7 +10,6 @@ package bencoding.android.tools;
 
 import org.appcelerator.kroll.KrollModule;
 import org.appcelerator.kroll.annotations.Kroll;
-
 import org.appcelerator.titanium.TiApplication;
 
 import bencoding.android.Common;
@@ -25,6 +24,12 @@ public class AndroidtoolsModule extends KrollModule
 	{
 		super();
 	}
+	
+	/*
+	 * A boolean extra that is set to "true" on the intent if it is launched by the bencoding BootReceiver.
+	 */
+	@Kroll.constant
+	public static final String LAUNCHED_FROM_BOOTRECEIVER = "LaunchedFromBootReceiver";
 
 	@Kroll.onAppCreate
 	public static void onAppCreate(TiApplication app)

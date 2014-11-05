@@ -5,9 +5,10 @@ import java.util.Calendar;
 import org.appcelerator.kroll.KrollDict;
 import org.appcelerator.titanium.TiApplication;
 
-
 import bencoding.android.Common;
-
+import bencoding.android.services.MainMenuService;
+import bencoding.android.services.WakefulIntentService;
+import bencoding.android.tools.AndroidtoolsModule;
 import android.R;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -65,6 +66,7 @@ public class BootReceiver  extends BroadcastReceiver{
 		Common.msgLogger("Processing bootType of " + bootType);
 
 		if(TiApplication.getInstance()!=null){
+			Common.msgLogger("App instance is not null.  fireAppEvent");
 			KrollDict event = new KrollDict();
 			event.put("type", bootType);
 			TiApplication.getInstance().fireAppEvent(BOOT_TYPE, event);
@@ -72,12 +74,14 @@ public class BootReceiver  extends BroadcastReceiver{
 		
 		//If bootType of start provided, startup the app
 		if(bootType.equalsIgnoreCase(BOOT_TYPE_PROPERTY)){
+			Common.msgLogger("bootType is PROPERTYBASED.  Startup and return.");
 			bootProperty(context,bundle);
 			return;
 		}
 		
 		//If bootType of start provided, startup the app
 		if(bootType.equalsIgnoreCase(BOOT_TYPE_START)){
+			Common.msgLogger("bootType is RESTART.  Call openBootUp.  Send to back? " + bundle.getBoolean(START_SEND_TO_BACK, false));
 			openBootUp(context, bundle.getBoolean(START_SEND_TO_BACK, false));
 			return;
 		}
@@ -133,10 +137,12 @@ public class BootReceiver  extends BroadcastReceiver{
 		writeStartDate(bundle);
 	}
 	private void openBootUp(Context context, boolean sendToBack){
+
+		Common.msgLogger("Called openBootUp");
 		bootStartup(context);
 		//Check if the app should immediately be sent to the background
 		if(sendToBack){
-			sendToBackground();
+			sendToBackground(TiApplication.getInstance());
 		}
 	}
 	private void propertyNotify(Context context, Bundle bundle){		
@@ -150,19 +156,24 @@ public class BootReceiver  extends BroadcastReceiver{
 	private void bootStartup(Context context){
 		if(TiApplication.getInstance() == null){
 			Intent standardIntent = context.getPackageManager().getLaunchIntentForPackage(context.getApplicationContext().getPackageName());
+			standardIntent.putExtra(AndroidtoolsModule.LAUNCHED_FROM_BOOTRECEIVER, true);
 			context.startActivity(standardIntent); 		
 		}else{
 			Intent tiIntent = TiApplication.getInstance().getPackageManager().getLaunchIntentForPackage(TiApplication.getInstance().getApplicationContext().getPackageName());
+			tiIntent.putExtra(AndroidtoolsModule.LAUNCHED_FROM_BOOTRECEIVER, true);
 			tiIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			TiApplication.getInstance().startActivity(tiIntent);						
 		}		
 	}
 	
-	private void sendToBackground(){
-		Intent startMain = new Intent(Intent.ACTION_MAIN);
-		startMain.addCategory(Intent.CATEGORY_HOME);
-		startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		TiApplication.getInstance().startActivity(startMain);		
+	private void sendToBackground(Context context){
+		Common.msgLogger(".sendToBackground()");
+		WakefulIntentService.acquireStaticLock(context);
+		Common.msgLogger(".sendToBackground():  Static wake lock acquired");
+		Intent svcIntent = new Intent(context, MainMenuService.class);
+		
+		context.startService(svcIntent);
+		Common.msgLogger(".sendToBackground():  Service Started");
 	}
 	
 	private void notifyOnStart(Context context,String msgTitle,String msgText, int msgIcon){
