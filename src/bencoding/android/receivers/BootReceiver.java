@@ -5,9 +5,7 @@ import java.util.Calendar;
 import org.appcelerator.kroll.KrollDict;
 import org.appcelerator.titanium.TiApplication;
 
-
 import bencoding.android.Common;
-
 import android.R;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -29,6 +27,11 @@ public class BootReceiver  extends BroadcastReceiver{
 	private final static String NOTIFY_MESSAGE = "message";
 	
 	private final static String BOOT_TYPE_PROPERTY ="PROPERTYBASED";
+	
+	/* service handling */
+	private final static String BOOT_TYPE_SERVICE = "SERVICE";
+	private final static String SERVICE_NAME = "serviceName";
+	private final static String SERVICE_INTERVAL = "serviceInterval";
 	
 	private final static String PROP_ENABLED ="enabled_property_to_reference";
 	private final static String PROP_BOOT_TYPE = "bootType_property_to_reference";
@@ -82,6 +85,14 @@ public class BootReceiver  extends BroadcastReceiver{
 			return;
 		}
 		
+		if (bootType.equalsIgnoreCase(BOOT_TYPE_SERVICE)){
+			String service = bundle.getString(SERVICE_NAME);
+			int interval = bundle.getInt(SERVICE_INTERVAL);
+			Common.msgLogger("running service: "+ service+" interval: "+interval);
+			bootService(context,service,interval);
+			return;
+		}
+		
 		//If the bootType is message, build a notification
 		if(bootType.equalsIgnoreCase(BOOT_TYPE_NOTIFY)){
 			int msgIcon = bundle.getInt("icon", R.drawable.stat_sys_warning);
@@ -132,6 +143,19 @@ public class BootReceiver  extends BroadcastReceiver{
 		}				
 		writeStartDate(bundle);
 	}
+	
+	private void bootService(Context context, String bootService, int interval){
+		try{
+			Intent serviceIntent = new Intent(context,Class.forName(bootService));
+	        serviceIntent.putExtra("interval", interval*1000L); // 10 secs
+	        Common.msgLogger("Starting service "+bootService +" interval "+interval);
+	        context.startService(serviceIntent); 
+	        
+		} catch (Exception e) {
+			Common.msgLogger(e.toString());
+		}
+	}
+	
 	private void openBootUp(Context context, boolean sendToBack){
 		bootStartup(context);
 		//Check if the app should immediately be sent to the background
