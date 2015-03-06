@@ -146,11 +146,13 @@ public class BootReceiver  extends BroadcastReceiver{
 	
 	private void bootService(Context context, String bootService, int interval){
 		try{
+			if(bootService.startsWith(".")){
+				bootService = context.getApplicationContext().getPackageName() + bootService;
+			}
 			Intent serviceIntent = new Intent(context,Class.forName(bootService));
-	        serviceIntent.putExtra("interval", interval*1000L); // 10 secs
-	        Common.msgLogger("Starting service "+bootService +" interval "+interval);
-	        context.startService(serviceIntent); 
-	        
+	        	serviceIntent.putExtra("interval", interval*1000L); // 10 secs
+	        	Common.msgLogger("Starting service "+bootService +" interval "+interval);
+	        	context.startService(serviceIntent);
 		} catch (Exception e) {
 			Common.msgLogger(e.toString());
 		}
