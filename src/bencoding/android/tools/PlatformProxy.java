@@ -31,6 +31,7 @@ public class PlatformProxy  extends KrollProxy {
 	}
 	
 
+	@SuppressWarnings("deprecation")
 	@Kroll.method
 	public boolean isAirplaneModeOn() {
 		   return Settings.System.getInt(TiApplication.getInstance().getApplicationContext().getContentResolver(),
