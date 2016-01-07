@@ -65,15 +65,13 @@ public class PlatformProxy  extends KrollProxy {
 	}
 	
 	@Kroll.method
-	public void restartApp(@Kroll.argument(optional=true) Object delay)
+	public void restartApp(@Kroll.argument(optional=true) String delay)
 	{
 		int pendingIntentID = 999123;
 		long DELAY_OFFSET = 15000;
 		
 		if (delay != null) {
-			if(delay instanceof Long){
-				DELAY_OFFSET = (Long)delay;
-			}
+			DELAY_OFFSET = Long.valueOf(delay);
 	    } 
 		
 		if(TiApplication.getInstance().isDebuggerEnabled()){
