@@ -10,7 +10,7 @@ import android.util.Log;
 
 public class Common {
 
-	private static boolean _writeToLog = false;
+	private static boolean _writeToLog = true;
 
     public static void setDebug(boolean value){
     	_writeToLog = value;
