@@ -1,0 +1,7 @@
+"/Users/InGrowth/Documents/Projects/Ti-Android-benCoding.Android.Tools/android/build/generated/java/bencoding/android/tools/AndroidtoolsBootstrap.java"
+"/Users/InGrowth/Documents/Projects/Ti-Android-benCoding.Android.Tools/android/src/bencoding/android/Common.java"
+"/Users/InGrowth/Documents/Projects/Ti-Android-benCoding.Android.Tools/android/src/bencoding/android/receivers/BootReceiver.java"
+"/Users/InGrowth/Documents/Projects/Ti-Android-benCoding.Android.Tools/android/src/bencoding/android/receivers/FireEventReciever.java"
+"/Users/InGrowth/Documents/Projects/Ti-Android-benCoding.Android.Tools/android/src/bencoding/android/tools/AndroidtoolsModule.java"
+"/Users/InGrowth/Documents/Projects/Ti-Android-benCoding.Android.Tools/android/src/bencoding/android/tools/ForegroundCheckTask.java"
+"/Users/InGrowth/Documents/Projects/Ti-Android-benCoding.Android.Tools/android/src/bencoding/android/tools/PlatformProxy.java"
