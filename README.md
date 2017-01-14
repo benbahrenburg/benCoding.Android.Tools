@@ -20,7 +20,7 @@ If you are building from source you will need to do the following:
 <h2>Setup</h2>
 
 * Download the latest release from the releases folder ( or you can build it yourself )
-* Install the bencoding.android.tools module. If you need help here is a "How To" [guide](https://wiki.appcelerator.org/display/guides/Configuring+Apps+to+Use+Modules). 
+* Install the bencoding.android.tools module. If you need help here is a "How To" [guide](https://wiki.appcelerator.org/display/guides2/Using+a+Module).
 * You can now use the module via the commonJS require method, example shown below.
 
 <pre><code>
@@ -52,7 +52,7 @@ Please check the module's example folder or view the [sample on github](https://
 
 <h3>Twitter</h3>
 
-Please consider following the [@benCoding Twitter](http://www.twitter.com/benCoding) for updates 
+Please consider following the [@benCoding Twitter](http://www.twitter.com/benCoding) for updates
 and more about Titanium.
 
 <h3>Blog</h3>
