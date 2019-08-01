@@ -5,14 +5,14 @@
 version: 1.0.0
 apiversion: 4
 architectures: arm64-v8a armeabi-v7a x86
-description: androidtools
+description: A collection of utilities designed to make working with Titanium on Android alittle easier.
 author: Benjamin Bahrenburg
 license: Apache 2 see attached licensing file
 copyright: Copyright (c) 2013 by Benjamin Bahrenburg
 
 # these should not be edited
-name: androidtools
+name: AndroidTools
 moduleid: bencoding.android.tools
 guid: c8a9f567-5923-4534-a567-cefcc17a0a7d
 platform: android
-minsdk: 7.0.0
+minsdk: 8.0.2
