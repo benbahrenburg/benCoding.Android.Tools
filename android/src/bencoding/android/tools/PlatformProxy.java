@@ -66,51 +66,10 @@ public class PlatformProxy  extends KrollProxy {
 	}
 	
 	@Kroll.method
-	public void restartApp(@Kroll.argument(optional=true) String delay)
+	public void restartApp()
 	{
-		int pendingIntentID = 999123;
-		long DELAY_OFFSET = 15000;
-		
-		if (delay != null) {
-			DELAY_OFFSET = Long.valueOf(delay);
-	    } 
-		
-		if(TiApplication.getInstance().isDebuggerEnabled()){
-			Log.d(AndroidtoolsModule.MODULE_FULL_NAME, "App cannot be restarted with debugger enabled");
-			throw new IllegalStateException("App cannot be restarted with debugger enabled");
-		}
-		
-		Log.d(AndroidtoolsModule.MODULE_FULL_NAME, "Creating Start Activity");
-		
-		//Get the Start Activity for your Ti App
-		Intent iStartActivity = TiApplication.getInstance().getApplicationContext().getPackageManager()
-	             	.getLaunchIntentForPackage( TiApplication.getInstance().getApplicationContext().getPackageName() );
-		
-		//Add the flags needed to restart
-		iStartActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		iStartActivity.addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-		iStartActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		iStartActivity.addCategory(Intent.CATEGORY_LAUNCHER);
-		iStartActivity.setAction(Intent.ACTION_MAIN);
-		
-		Log.d(AndroidtoolsModule.MODULE_FULL_NAME, "Creating Pending Intent");
-		
-		//Create a pending intent for the Start Activity
-		PendingIntent pendingIntent = PendingIntent.getActivity(TiApplication.getInstance().getApplicationContext(), 
-				pendingIntentID,    
-				iStartActivity,
-				PendingIntent.FLAG_UPDATE_CURRENT);
-		
-		Log.d(AndroidtoolsModule.MODULE_FULL_NAME, "Scheduling Restart");
-		//Schedule an Alarm to restart after a delay
-		AlarmManager mgr = (AlarmManager)TiApplication.getInstance().getApplicationContext().getSystemService(TiApplication.ALARM_SERVICE);		
-		mgr.set(AlarmManager.RTC, System.currentTimeMillis() + DELAY_OFFSET, pendingIntent);		
-		Log.d(AndroidtoolsModule.MODULE_FULL_NAME, "Clean-up and Exit");		
-		//Tell Ti to do some clean-up
-		TiApplication.getInstance().beforeForcedRestart();
-		
-		//Do a force quite
-		performExit();
+		Log.d(AndroidtoolsModule.MODULE_FULL_NAME, "Soft Restart");		
+		TiApplication.getInstance().softRestart();
 	}
 		
 	@Kroll.method
