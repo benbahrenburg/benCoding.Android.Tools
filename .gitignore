@@ -12,6 +12,9 @@ hooks/
 bin/
 gen/
 libs/
+dist
+android/dist
+java-sources.txt
 
 # Local configuration file (sdk path, etc)
 local.properties
